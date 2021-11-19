@@ -86,8 +86,21 @@
       <button>Trigger a Global Error</button>
     </section>
   </main>
-
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+<script>
+  window.TrackJS && TrackJS.install({ 
+    token: "2133367da9af46bba4be1e4c1572e322"
+    // for more configuration options, see https://docs.trackjs.com
+  });
+</script>
+       
   <script>
+    class InputError extends Error{
+  constructor(message){
+    super(message);
+    this.name = InputError;
+  }
+}
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -95,6 +108,27 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
+      try{
+        if(isNaN(firstNum)){
+          throw new ReferenceError("Input is not a valid number");
+        }
+      } catch(err){
+        if(err instanceof ReferenceError){
+          alert(err.message);
+          return;
+        }
+      }
+      try{
+        if(isNaN(secondNum)){
+          throw new InputError("second input is not a valid number");
+        }
+      } catch(err){
+        if(err instanceof InputError){
+        alert(err.message);
+        }
+        return;
+      }
+
       output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
     });
 
@@ -102,6 +136,117 @@
 
     // Start your code here
     // You may move this JS to another file if you wish
+
+    //Console log
+    var logg = errorBtns[0];
+      logg.onclick = function() {
+      console.log("testing");
+}
+
+    //Error
+    var err = errorBtns[1];
+      err.onclick = function() {
+      console.error("error");
+}
+
+    //count
+    var ct = errorBtns[2];
+      ct.onclick = function() {
+      console.count();
+      }
+    //warn
+    var war = errorBtns[3];
+      war.onclick = function() {
+      console.warn('warning');
+}
+  //assert
+  var ass = errorBtns[4];
+      ass.onclick = function() {
+        console.assert(0 % 2 == 1, {number: 0, errorMsg: 'false'})
+
+}
+  //clear
+  var clr = errorBtns[5];
+      clr.onclick = function() {
+      console.clear();
+
+}
+//Dir
+var dir = errorBtns[6];
+      dir.onclick = function() {
+      console.dir(document.head);
+
+}
+
+//Xml
+var xml = errorBtns[7];
+      xml.onclick = function() {
+      console.dirxml(document);
+
+}
+let text = 'values';
+//GroupStart
+var gs = errorBtns[8];
+      gs.onclick = function() {
+      console.group(text);
+      console.log('10');
+      console.log('15');
+      console.log('35');
+}
+
+//GroupEnd
+var ge = errorBtns[9];
+      ge.onclick = function() {
+      console.groupEnd(text);
+}
+
+//table
+var tab = errorBtns[10];
+      tab.onclick = function() {
+      console.table(errorBtns);
+
+}
+
+//timestart
+var ts = errorBtns[11];
+      ts.onclick = function() {
+      console.time();
+      for(var i = 0; i < 1000; i++){
+        let sec = i;
+      }
+}
+
+//timeEnd
+var te = errorBtns[12];
+      te.onclick = function() {
+      console.timeEnd();
+}
+
+//trace
+var tra = errorBtns[13];
+  tra.onclick = function(){
+  const first = () => { second(); };
+  const second = () => { third(); };
+  const third = () => { console.trace(); };
+  first();
+}
+
+//GlobalError
+var GErr = errorBtns[14];
+  GErr.onclick = function(){
+  const a = 'a';
+  a = 'b';
+}
+
+window.addEventListener('error', function(){
+  console.log("onError");
+})
+
+
+
+
+
+
   </script>
 </body>
 
